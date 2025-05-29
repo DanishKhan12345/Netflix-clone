@@ -29,3 +29,4 @@ export class BannerComponent implements OnInit {
     console.log('Showing more info...');
   }
 }
+ 

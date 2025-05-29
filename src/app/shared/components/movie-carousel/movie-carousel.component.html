@@ -1,0 +1,25 @@
+<!-- Movie Carousel Swiper Container -->
+<div class="container px-20 mt-14 mb-20">
+    <p class="text-white text-2xl my-3 ml-3 font-semibold">{{title}}</p>
+    <div #swipercontainer class="swiper-container">
+      <div class="swiper-wrapper">
+        <ng-container *ngFor="let movie of movieContents">
+          <div class="swiper-slide relative">
+            <img
+              [src]="'https://image.tmdb.org/t/p/w500' + movie.poster_path" alt=""/>
+            <div class="desc p-2">
+              <span class="text-base flex flex-wrap font-bold">{{movie.original_title}}</span>
+              <p class="text-xs text-gray-400 my-3">{{movie.overview | description : 140}}</p>
+              <div class="py-3 absolute w-[90%] bottom-1">
+                <p class="text-xs flex items-center justify-between">
+                <span class="text-xs text-green-500">Movie Rating : {{movie.vote_average}}</span>
+                <i class="fa-solid fa-star text-yellow-500" aria-hidden="true"></i>
+            </p>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+  
