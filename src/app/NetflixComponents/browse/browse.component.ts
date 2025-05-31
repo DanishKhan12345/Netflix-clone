@@ -17,9 +17,9 @@ export class BrowseComponent implements OnInit{
   
   authservice = inject(AuthService);
   moviesService = inject(MoviesService);
-  name = JSON.parse(sessionStorage.getItem('LoggedInUser')!).name;
-  userProfileImage = JSON.parse(sessionStorage.getItem('LoggedInUser')!).picture;
-  email = JSON.parse(sessionStorage.getItem('LoggedInUser')!).email;
+  name:any;
+  userProfileImage:any;
+  email:any;
   
   movieContents: IMovieContent[] = [];
   movies: IMovieContent[] = [];
@@ -44,6 +44,11 @@ sources =
 ]
 
   ngOnInit(): void {
+
+    this.name = JSON.parse(sessionStorage.getItem('LoggedInUser')!).name;
+    this.userProfileImage = JSON.parse(sessionStorage.getItem('LoggedInUser')!).picture;
+    this.email = JSON.parse(sessionStorage.getItem('LoggedInUser')!).email;
+
     forkJoin(this.sources)
     .pipe(
       map(([movies, tvShows,nowPlaying, upcoming, popular, topRated])=>{
@@ -60,8 +65,8 @@ sources =
       this.popularMovies = res.popular.results as IMovieContent[];
       this.topRatedMovies = res.topRated.results as IMovieContent[];
       // this.getMovieKey();
-      debugger;
-      console.log(res.nowPlaying);
+      // debugger;
+      // console.log(res.nowPlaying);
     })
 
 
