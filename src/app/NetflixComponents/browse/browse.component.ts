@@ -79,13 +79,6 @@ sources =
       // debugger;
       // console.log(res.nowPlaying);
     })
-
-
-    // this.moviesService.getMovies().subscribe((res)=>{
-    //   console.log(res);
-    //   this.movieContents = res.results;
-    // })
-
     
   }
 
