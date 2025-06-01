@@ -1,5 +1,6 @@
 <app-header [userImg]="userProfileImage"></app-header>
-<app-banner></app-banner>
+<app-banner [bannerTitle]="(bannerDetail$ | async)?.original_title" [bannerOverview]="(bannerDetail$ | async)?.overview" 
+            [bannerVideo]="(bannerVideo$ | async)?.results[0].key"></app-banner>
 <app-movie-carousel [movieContents]="movies" [title]="'Popular on Netflix'"></app-movie-carousel>
 <app-movie-carousel [movieContents]="tvShows" [title]="'Trending TV Shows'"></app-movie-carousel>
 <!-- <app-movie-carousel [movieContents]="topRatedMovies" [title]="'Top Rated Movies'"></app-movie-carousel> -->

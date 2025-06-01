@@ -42,21 +42,21 @@ getBannerImage() {
   return this.http.get(`https://api.themoviedb.org/3/movie/157336/images`, options)
 }
 
-// getBannerVideo(id: number) {
-//   return this.http.get(`https://api.themoviedb.org/3/movie/${id}/videos`, options);
+getBannerVideo(id: number) {
+  return this.http.get(`https://api.themoviedb.org/3/movie/${id}/videos`, options);
+}
+
+  getBannerDetail(id: number) {
+    return this.http.get(`https://api.themoviedb.org/3/movie/${id}`, options);
+  }
+
+// getBannerDetail() {
+//   return this.http.get(`https://api.themoviedb.org/3/movie/157336`, options);
 // }
 
-getBannerVideo() {
-  return this.http.get(`https://api.themoviedb.org/3/movie/157336/videos`, options);
-}
-
-  // getBannerDetail(id: number) {
-  //   return this.http.get(`https://api.themoviedb.org/3/movie/${id}`, options);
-  // }
-
-getBannerDetail() {
-  return this.http.get(`https://api.themoviedb.org/3/movie/157336`, options);
-}
+// getBannerVideo() {
+//   return this.http.get(`https://api.themoviedb.org/3/movie/157336/videos`, options);
+// }
 
 getNowPlayingMovies() {
   return this.http.get('https://api.themoviedb.org/3/movie/now_playing', options)

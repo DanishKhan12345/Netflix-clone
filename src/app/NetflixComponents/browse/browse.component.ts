@@ -6,7 +6,7 @@ import { BannerComponent } from '../../core/components/banner/banner.component';
 import { MoviesService } from '../../shared/services/movies.service';
 import { MovieCarouselComponent } from '../../shared/components/movie-carousel/movie-carousel.component';
 import { IMovieContent } from '../../shared/models/shared/models/movie.interface';
-import { forkJoin, map } from 'rxjs';
+import { forkJoin, map, Observable } from 'rxjs';
 @Component({
   selector: 'app-browse',
   imports: [CommonModule, HeaderComponent,BannerComponent,MovieCarouselComponent],
@@ -15,6 +15,9 @@ import { forkJoin, map } from 'rxjs';
 })
 export class BrowseComponent implements OnInit{
   
+  bannerDetail$ = new Observable<any>();
+  bannerOverview$ = new Observable<any>();
+  bannerVideo$ = new Observable<any>();
   authservice = inject(AuthService);
   moviesService = inject(MoviesService);
   name:any;
@@ -33,13 +36,21 @@ export class BrowseComponent implements OnInit{
   
 sources = 
 [
-  this.moviesService.getMovies(),
-  this.moviesService.getTvShows(),
-  // this.moviesService.getRatedMovies(),
-  this.moviesService.getBannerImage(),
-  this.moviesService.getBannerVideo(),
-  this.moviesService.getBannerDetail(),
-  this.moviesService.getNowPlayingMovies(),
+  // this.moviesService.getMovies(),
+  // this.moviesService.getTvShows(),
+  // // this.moviesService.getRatedMovies(),
+  // this.moviesService.getBannerImage(),
+  // // this.moviesService.getBannerVideo(),
+  // // this.moviesService.getBannerDetail(),
+  // this.moviesService.getNowPlayingMovies(),
+
+    this.moviesService.getMovies(),
+    this.moviesService.getTvShows(),
+    // this.moviesService.getRatedMovies(),
+    this.moviesService.getNowPlayingMovies(),
+    this.moviesService.getUpcomingMovies(),
+    this.moviesService.getPopularMovies(),
+    this.moviesService.getTopRated()
   
 ]
 
@@ -52,8 +63,8 @@ sources =
     forkJoin(this.sources)
     .pipe(
       map(([movies, tvShows,nowPlaying, upcoming, popular, topRated])=>{
-        // this.bannerDetail$ = this.moviesService.getBannerDetail(movies.results[1].id);
-        // this.bannerVideo$ = this.moviesService.getBannerVideo(movies.results[1].id);
+        this.bannerDetail$ = this.moviesService.getBannerDetail(movies.results[5].id);
+        this.bannerVideo$ = this.moviesService.getBannerVideo(movies.results[5].id);
         return {movies, tvShows,nowPlaying, upcoming, popular, topRated}
       })
     ).subscribe((res:any)=>{

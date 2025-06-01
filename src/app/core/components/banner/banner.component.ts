@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-banner',
@@ -8,15 +9,21 @@ import { CommonModule } from '@angular/common';
   templateUrl: './banner.component.html',
   styleUrls: ['./banner.component.css']
 })
-export class BannerComponent implements OnInit {
-  // featuredContent = {
-  //   title: 'Stranger Things',
-  //   description: 'When a young boy vanishes, a small town uncovers a mystery involving secret experiments, terrifying supernatural forces and one strange little girl.',
-  //   backgroundImage: 'https://image.tmdb.org/t/p/original/56v2KjBlU4XaOv9rVYEQypROD7P.jpg'
-  // };
+export class BannerComponent implements OnChanges {
+  
+  @Input({required: true}) bannerTitle  : string = '';
+  @Input({required: true}) bannerOverview: string = '';
+  @Input() bannerVideo: any = 'fsQgc9pCyDU';
+  private sanitizer = inject(DomSanitizer);
+  videoUrl: SafeResourceUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+    `https://www.youtube.com/embed/${this.bannerVideo}?autoplay=1&mute=1&loop=1&controls=0&playlist=${this.bannerVideo}`);
 
-  ngOnInit() {
-    // In a real application, you would fetch this data from a service
+  ngOnChanges(changes: SimpleChanges): void {
+    if(changes['bannerVideo']){
+      this.videoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(
+        `https://www.youtube.com/embed/${this.bannerVideo}?autoplay=1&mute=1&loop=1&controls=0&playlist=${this.bannerVideo}`);
+
+    }
   }
 
   playVideo() {
