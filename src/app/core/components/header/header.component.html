@@ -8,11 +8,41 @@
         </li>
       </ul>
     </div>
-    <!-- Right Side: Welcome Text and Profile Image -->
-    <div class="text-neutral-300 text-sm font-extralight flex items-center gap-3">
-      <a href="/">Welcome user</a>
-      <img [src]="userImg" alt="profile-icon" class="w-8 h-8 rounded-full">
-      &nbsp; | 
-      <a href="/">Sign Out</a>
+    <!-- Right Side: Profile Menu -->
+    <!-- Wrap both blocks in one right-aligned flex container -->
+<div class="flex items-center space-x-4 ml-auto text-neutral-300 text-sm font-extralight">
+
+  <!-- Welcome + Sign Out -->
+  <a href="/" class="hover:text-white">Welcome user</a>
+  <img [src]="userImg" alt="profile-icon" class="w-8 h-8 rounded-full" />
+  <span class="opacity-50">|</span>
+  <a href="/" class="hover:text-white">Sign Out</a>
+
+  <!-- Profile selector & dropdown -->
+  <div class="relative">
+    <button
+      (click)="toggleProfileMenu()"
+      class="flex items-center gap-2 hover:text-white focus:outline-none"
+    >
+      <img
+        [src]="'https://occ-0-2590-2164.1.nflxso.net/dnm/api/v6/vN7bi_My87NPKvsBoib006Llxzg/AAAABTZ2zlLdBVC05fsd2YQAR43J6vB1NAUBOOrxt7oaFATxMhtdzlNZ846H3D8TZzooe2-FT853YVYs8p001KVFYopWi4D4NXM.png?r=229'"
+        alt="profile-icon"
+        class="w-8 h-8 rounded-full"
+      />
+    </button>
+
+    <!-- Dropdown menu -->
+    <div
+      *ngIf="showProfileMenu"
+      class="absolute right-0 mt-2 w-48 bg-black border border-gray-800 rounded shadow-lg z-10"
+    >
+      <a
+        (click)="switchProfile()"
+        class="block px-4 py-2 text-gray-300 hover:bg-gray-800 hover:text-white cursor-pointer"
+      >
+        Switch Profile
+      </a>
     </div>
+  </div>
+</div>
   </header>
