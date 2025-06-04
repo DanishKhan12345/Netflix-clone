@@ -16,23 +16,28 @@ const DEFAULT_AVATAR = 'https://occ-0-2590-2164.1.nflxso.net/dnm/api/v6/vN7bi_My
     <div class="min-h-screen bg-black text-white flex flex-col items-center justify-center">
       <h1 class="text-4xl font-bold mb-12">Who's watching?</h1>
       
-      <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-8">
+      <div class="grid grid-cols-2 gap-8 max-w-[600px]">
         <!-- Existing Profiles -->
         <div *ngFor="let profile of profiles$ | async" 
-             class="flex flex-col items-center cursor-pointer group"
+             class="flex flex-col items-center cursor-pointer group relative"
              (click)="selectProfile(profile)">
           <div class="w-32 h-32 rounded-md overflow-hidden mb-4 group-hover:border-2 group-hover:border-white relative">
             <img [src]="profile.avatar || DEFAULT_AVATAR" 
                  [alt]="profile.name" 
                  class="w-full h-full object-cover"
                  (error)="handleImageError($event)">
+            <button 
+              class="absolute top-0 right-0 bg-red-600 text-white p-1 rounded-bl opacity-0 group-hover:opacity-100 transition-opacity"
+              (click)="deleteProfileHandler($event, profile)">
+              <span class="text-sm">✕</span>
+            </button>
           </div>
           <span class="text-gray-400 group-hover:text-white">{{profile.name}}</span>
         </div>
 
         <!-- Add Profile Button -->
         <ng-container *ngIf="(profiles$ | async) as profiles">
-          <div *ngIf="profiles.length < 5" 
+          <div *ngIf="profiles.length < 4" 
                class="flex flex-col items-center cursor-pointer group"
                (click)="showAddProfile = true">
             <div class="w-32 h-32 rounded-md overflow-hidden mb-4 bg-[#141414] flex items-center justify-center group-hover:border-2 group-hover:border-white">
@@ -72,6 +77,24 @@ const DEFAULT_AVATAR = 'https://occ-0-2590-2164.1.nflxso.net/dnm/api/v6/vN7bi_My
               </button>
             </div>
           </form>
+        </div>
+      </div>
+
+      <!-- Delete Profile Confirmation Modal -->
+      <div *ngIf="showDeleteConfirmation" class="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+        <div class="bg-[#141414] p-8 rounded-lg w-96">
+          <h2 class="text-2xl font-bold mb-4">Delete Profile</h2>
+          <p class="text-gray-400 mb-6">Are you sure you want to delete this profile? This action cannot be undone.</p>
+          <div class="flex justify-end gap-4">
+            <button (click)="showDeleteConfirmation = false"
+                    class="px-4 py-2 text-gray-400 hover:text-white">
+              Cancel
+            </button>
+            <button (click)="confirmDeleteProfile()"
+                    class="px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700">
+              Delete Profile
+            </button>
+          </div>
         </div>
       </div>
 
@@ -116,6 +139,8 @@ export class ProfileSelectorComponent implements OnInit {
   selectedProfile: IProfile | null = null;
   pin = '';
   DEFAULT_AVATAR = DEFAULT_AVATAR;
+  showDeleteConfirmation = false;
+  profileToDelete: IProfile | null = null;
 
   newProfile = {
     name: '',
@@ -190,5 +215,19 @@ export class ProfileSelectorComponent implements OnInit {
       alert('Invalid PIN');
     }
     this.pin = '';
+  }
+
+  deleteProfileHandler(event: Event, profile: IProfile) {
+    event.stopPropagation();
+    this.profileToDelete = profile;
+    this.showDeleteConfirmation = true;
+  }
+
+  confirmDeleteProfile() {
+    if (this.profileToDelete) {
+      this.profileService.deleteProfile(this.profileToDelete.id);
+      this.showDeleteConfirmation = false;
+      this.profileToDelete = null;
+    }
   }
 } 
